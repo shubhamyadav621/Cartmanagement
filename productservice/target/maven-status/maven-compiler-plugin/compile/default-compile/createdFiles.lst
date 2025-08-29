@@ -1,0 +1,5 @@
+com\ncu\productservice\services\productService.class
+com\ncu\productservice\models\product.class
+com\ncu\productservice\ProductServiceApplication.class
+com\ncu\productservice\controller\productController.class
+com\ncu\productservice\Repository\productRepository.class
