@@ -1,43 +1,47 @@
 package com.ncu.productservice.controller;
 
-import com.ncu.productservice.models.product;
-import com.ncu.productservice.services.productService;
+import com.ncu.productservice.models.Product;
+import com.ncu.productservice.services.ProductService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/products")
-public class productController {
+public class ProductController {
 
-    private final productService service;
+    private final ProductService service;
 
-    public productController(productService service) {
+    public ProductController(ProductService service) {
         this.service = service;
     }
 
     @GetMapping
-    public List<product> getAllProducts() {
+    public List<Product> getAllProducts() {
         return service.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public product getProductById(@PathVariable Long id) {
+    public Product getProductById(@PathVariable Long id) {
         return service.getProductById(id);
     }
 
     @PostMapping
-    public product createProduct(@RequestBody product product) {
-        return service.createProduct(product);
+    public String addProduct(@RequestBody Product product) {
+        service.addProduct(product);
+        return "Product added successfully!";
     }
 
     @PutMapping("/{id}")
-    public product updateProduct(@PathVariable Long id, @RequestBody product product) {
-        return service.updateProduct(id, product);
+    public String updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        product.setId(id);
+        service.updateProduct(product);
+        return "Product updated successfully!";
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id) {
+    public String deleteProduct(@PathVariable Long id) {
         service.deleteProduct(id);
+        return "Product deleted successfully!";
     }
 }
