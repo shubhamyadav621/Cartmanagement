@@ -1,2 +1,5 @@
+com\order\cartm\models\Order.class
+com\order\cartm\repository\OrderDAO.class
+com\order\cartm\services\OrderService.class
 com\order\cartm\controller\OrderController.class
 com\order\cartm\OrderServiceApplication.class

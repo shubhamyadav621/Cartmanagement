@@ -1,32 +1,39 @@
 package com.order.cartm.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+import org.springframework.web.bind.annotation.*;
+import com.order.cartm.models.Order;
+import com.order.cartm.services.OrderService;
 
-@RequestMapping("/orders")
 @RestController
+@RequestMapping("/orders")
 public class OrderController {
 
-    /*
-     * http://localhost:8080/orders/allorders
-     */
-    @GetMapping("/allorders")
-    public String getAllOrders() {
-        System.out.println("Hello from order controller!");
-        return "All Orders: Order1, Order2, Order3";
-    }
-// http://localhost:8080/orders/byId/101
-@GetMapping("/byId/{orderId}")
-public String getOrderById(@PathVariable int orderId) {
-    return "Order details for ID: " + orderId;
-}
+    private final OrderService service;
 
-// http://localhost:8080/orders/byRequest?orderId=202
-@GetMapping("/byRequest")
-public String getOrderByIdFromRequest(@RequestParam int orderId) {
-    return "Order details for ID: " + orderId;
-}
+    public OrderController(OrderService service) {
+        this.service = service;
+    }
+
+    @GetMapping("/all")
+    public List<Order> getAllOrders() {
+        return service.getAllOrders();
+    }
+
+    @GetMapping("/{id}")
+    public Order getOrderById(@PathVariable Long id) {
+        return service.getOrderById(id);
+    }
+
+    @PostMapping("/add")
+    public String addOrder(@RequestBody Order o) {
+        boolean success = service.saveOrder(o);
+        return success ? "Order added successfully!" : "Failed to add order!";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteOrder(@PathVariable Long id) {
+        boolean success = service.deleteOrder(id);
+        return success ? "Order deleted successfully!" : "Order not found!";
+    }
 }
