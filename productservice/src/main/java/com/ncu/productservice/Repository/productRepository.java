@@ -4,7 +4,7 @@ import com.ncu.productservice.models.Product;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.lang.NonNull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -17,21 +17,17 @@ public class ProductRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private final RowMapper<Product> rowMapper = new RowMapper<>() {
-        @Override
-        public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Product product = new Product();
-            product.setId(rs.getLong("id"));
-            product.setName(rs.getString("name"));
-            product.setDescription(rs.getString("description"));
-            product.setPrice(rs.getDouble("price"));
-            product.setQuantity(rs.getInt("quantity"));
-            return product;
-        }
-    };
+    private RowMapper<Product> rowMapper = ( @NonNull ResultSet rs, int rowNum ) -> {
+    Product product = new Product();
+    product.setId(rs.getLong("id"));
+    product.setName(rs.getString("name"));
+    product.setPrice(rs.getDouble("price"));
+    product.setQuantity(rs.getInt("quantity"));
+    return product;
+};
 
     public List<Product> findAll() {
-        return jdbcTemplate.query("SELECT * FROM product", rowMapper);
+        return jdbcTemplate.query("SELECT * FROM Product", rowMapper);
     }
 
     public Product findById(Long id) {
@@ -59,3 +55,20 @@ public class ProductRepository {
         return jdbcTemplate.update("DELETE FROM product WHERE id = ?", id);
     }
 }
+
+
+
+/*
+GET http://localhost:8080/products
+GET http://localhost:8080/products/1
+POST http://localhost:8080/products
+DELETE http://localhost:8080/products/1
+
+
+{
+  "name": "Smartphone Pro",
+  "description": "Android phone with 12GB RAM",
+  "price": 32000,
+  "quantity": 40
+}
+*/ 
