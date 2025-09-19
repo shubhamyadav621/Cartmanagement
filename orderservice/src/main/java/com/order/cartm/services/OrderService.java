@@ -1,7 +1,14 @@
 package com.order.cartm.services;
 
 import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.order.cartm.dto.Product;
 import com.order.cartm.models.Order;
 import com.order.cartm.repository.OrderDAO;
 
@@ -9,9 +16,11 @@ import com.order.cartm.repository.OrderDAO;
 public class OrderService {
 
     private final OrderDAO orderDAO;
+    private final RestTemplate restTemplate;
 
-    public OrderService(OrderDAO orderDAO) {
+    public OrderService(OrderDAO orderDAO, RestTemplate restTemplate) {
         this.orderDAO = orderDAO;
+        this.restTemplate = restTemplate;
     }
 
     public List<Order> getAllOrders() {
@@ -28,5 +37,16 @@ public class OrderService {
 
     public boolean deleteOrder(Long id) {
         return orderDAO.deleteById(id) > 0;
+    }
+
+   
+    public List<Product> getAllProductsFromProductService() {
+        ResponseEntity<List<Product>> response = restTemplate.exchange(
+            "http://PRODUCT-SERVICE/products",  
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<List<Product>>() {}
+        );
+        return response.getBody();
     }
 }

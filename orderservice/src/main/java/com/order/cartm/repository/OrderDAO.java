@@ -1,11 +1,13 @@
 package com.order.cartm.repository;
 
-import com.order.cartm.models.Order;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import java.util.List;
+
+import com.order.cartm.models.Order;
 
 @Repository
 public class OrderDAO {
@@ -14,23 +16,19 @@ public class OrderDAO {
     private JdbcTemplate jdbcTemplate;
 
     public List<Order> findAll() {
-        String sql = "SELECT * FROM orders";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Order.class));
+        return jdbcTemplate.query("SELECT * FROM orders", new BeanPropertyRowMapper<>(Order.class));
     }
 
     public Order findById(Long id) {
-        String sql = "SELECT * FROM orders WHERE id = ?";
-        List<Order> result = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Order.class), id);
+        List<Order> result = jdbcTemplate.query("SELECT * FROM orders WHERE id = ?", new BeanPropertyRowMapper<>(Order.class), id);
         return result.isEmpty() ? null : result.get(0);
     }
 
     public int save(Order o) {
-        String sql = "INSERT INTO orders (id, name, quantity) VALUES (?, ?, ?)";
-        return jdbcTemplate.update(sql, o.getId(), o.getName(), o.getQuantity());
+        return jdbcTemplate.update("INSERT INTO orders (id, name, quantity) VALUES (?, ?, ?)", o.getId(), o.getName(), o.getQuantity());
     }
 
     public int deleteById(Long id) {
-        String sql = "DELETE FROM orders WHERE id = ?";
-        return jdbcTemplate.update(sql, id);
+        return jdbcTemplate.update("DELETE FROM orders WHERE id = ?", id);
     }
 }

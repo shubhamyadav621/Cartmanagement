@@ -1,42 +1,37 @@
 package com.ncu.productservice.services;
 
-import com.ncu.productservice.models.product;
-import com.ncu.productservice.Repository.productRepository;
+import com.ncu.productservice.models.Product;
+import com.ncu.productservice.Repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class productService {
+public class ProductService {
 
-    private final productRepository Repository;
+    private final ProductRepository repository;
 
-    public productService(productRepository Repository) {
-        this.Repository = Repository;
+    public ProductService(ProductRepository repository) {
+        this.repository = repository;
     }
 
-    public List<product> getAllProducts() {
-        return Repository.findAll();
+    public List<Product> getAllProducts() {
+        return repository.findAll();
     }
 
-    public product getProductById(Long id) {
-        return Repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    public Product getProductById(Long id) {
+        return repository.findById(id);
     }
 
-    public product createProduct(product product) {
-        return Repository.save(product);
+    public void addProduct(Product product) {
+        repository.save(product);
     }
 
-    public product updateProduct(Long id, product product) {
-        product existing = getProductById(id);
-        existing.setName(product.getName());
-        existing.setDescription(product.getDescription());
-        existing.setPrice(product.getPrice());
-        existing.setQuantity(product.getQuantity());
-        return Repository.save(existing);
+    public void updateProduct(Product product) {
+        repository.update(product);
     }
 
     public void deleteProduct(Long id) {
-        Repository.deleteById(id);
+        repository.delete(id);
     }
 }
