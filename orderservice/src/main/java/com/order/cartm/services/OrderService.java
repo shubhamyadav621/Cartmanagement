@@ -1,6 +1,8 @@
 package com.order.cartm.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -38,6 +40,7 @@ public class OrderService {
     public boolean deleteOrder(Long id) {
         return orderDAO.deleteById(id) > 0;
     }
+    
 
    
     public List<Product> getAllProductsFromProductService() {
@@ -49,4 +52,19 @@ public class OrderService {
         );
         return response.getBody();
     }
+
+    public Map<String, Object> getPaginatedOrders(int page, int size) {
+    List<Order> orders = orderDAO.findPaginated(page, size);
+    int totalElements = orderDAO.countTotalOrders();
+    int totalPages = (int) Math.ceil((double) totalElements / size);
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("page", page);
+    response.put("size", size);
+    response.put("totalPages", totalPages);
+    response.put("totalElements", totalElements);
+    response.put("orders", orders);
+
+    return response;}
+    
 }

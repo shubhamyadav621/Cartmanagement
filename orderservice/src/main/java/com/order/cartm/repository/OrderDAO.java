@@ -31,4 +31,15 @@ public class OrderDAO {
     public int deleteById(Long id) {
         return jdbcTemplate.update("DELETE FROM orders WHERE id = ?", id);
     }
+    public List<Order> findPaginated(int page, int size) {
+    int offset = page * size;
+    String sql = "SELECT * FROM orders LIMIT ? OFFSET ?";
+    return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Order.class), size, offset);
+}
+
+public int countTotalOrders() {
+    String sql = "SELECT COUNT(*) FROM orders";
+    return jdbcTemplate.queryForObject(sql, Integer.class);
+}
+
 }
