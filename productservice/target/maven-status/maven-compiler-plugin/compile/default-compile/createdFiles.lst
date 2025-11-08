@@ -1,6 +1,0 @@
-com\ncu\productservice\models\Product.class
-com\ncu\productservice\Repository\ProductRepository$1.class
-com\ncu\productservice\ProductServiceApplication.class
-com\ncu\productservice\controller\ProductController.class
-com\ncu\productservice\Repository\ProductRepository.class
-com\ncu\productservice\services\ProductService.class
