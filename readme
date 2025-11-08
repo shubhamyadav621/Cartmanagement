@@ -1,0 +1,68 @@
+Project Title:
+Cart Management System (Microservices Project)
+
+Team Members:
+
+
+Shubham Yadav – 22CSU444
+Deepanshu Yadav – 22CSU376
+Tanishq – 22CSU451
+
+
+
+Working Services / Functionalities:
+Product Service – Working properly
+Cart Service – Working (basic add endpoint)
+Order Service – Fully working
+Config Server – Working
+API Gateway – Working
+
+Who Coded Which Service:
+
+
+Shubham Yadav (22CSU444) → Order Service
+
+
+Tanishq (22CSU451) → Cart Service (basic add endpoint)
+
+
+Deepanshu Yadav (22CSU376) → Product Service
+
+
+
+Common Code:
+
+
+Config Server → coded by Deepanshu Yadav (22CSU376)
+
+
+API Gateway → coded by Shubham Yadav (22CSU444)
+
+
+
+Working Endpoints and Example Calls
+
+1. Order Service (Shubham Yadav)
+Base URL: http://localhost:8084/orders
+EndpointMethodDescriptionExample/orders/allGETGet all ordersGET http://localhost:8084/orders/all/orders/{id}GETGet order by IDGET http://localhost:8084/orders/1/orders/addPOSTAdd new orderPOST http://localhost:8084/orders/add  Body: { "orderId": 1, "user": "Shubham", "amount": 1200 }/orders/delete/{id}DELETEDelete order by IDDELETE http://localhost:8084/orders/delete/1/orders/productsGETGet all products (via Product Service)GET http://localhost:8084/orders/products/orders/nextpage?page=0&size=5GETGet paginated ordersGET http://localhost:8084/orders/nextpage?page=0&size=5
+
+2. Cart Service (Tanishq)
+Base URL: http://localhost:8083/cart
+EndpointMethodDescriptionExample/cart/addPOSTAdd item to cartPOST http://localhost:8083/cart/add  Body: { "productId": 1, "quantity": 2 }
+
+3. Product Service (Deepanshu Yadav)
+Base URL: http://localhost:8082/products
+EndpointMethodDescriptionExample/productsGETGet all productsGET http://localhost:8082/products/products/{id}GETGet product by IDGET http://localhost:8082/products/1/productsPOSTAdd a new productPOST http://localhost:8082/products  Body: { "name": "Laptop", "price": 70000 }/products/{id}PUTUpdate productPUT http://localhost:8082/products/1  Body: { "name": "Updated Laptop", "price": 65000 }/products/{id}DELETEDelete productDELETE http://localhost:8082/products/1
+
+4. API Gateway (Shubham Yadav)
+Base URL: http://localhost:8080/
+Routes:
+/products/** → Product Service
+/cart/** → Cart Service
+/orders/** → Order Service
+
+
+
+5. Config Server (Deepanshu Yadav)
+Base URL: http://localhost:8888/
+Used for centralized configuration of all services.
